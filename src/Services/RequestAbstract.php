@@ -5,12 +5,10 @@ namespace TopUpHandler\Services;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use SimpleXMLElement;
 
 abstract class RequestAbstract
 {
     public $client;
-
     const BASE_URL = 'http://localhost:3001';
 
     /**
@@ -33,14 +31,5 @@ abstract class RequestAbstract
     protected function makeRequest($params, $type = 'GET')
     {
         return $this->client->request($type, null, ['query' => $params]);
-    }
-
-    /**
-     * @param $response
-     * @return SimpleXMLElement
-     */
-    protected function parseResponse($response)
-    {
-        return new SimpleXMLElement($response->getBody()->getContents());
     }
 }

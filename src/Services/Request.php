@@ -7,6 +7,11 @@ use SimpleXMLElement;
 
 class Request extends RequestAbstract
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     /**
      * @param $number
      * @return SimpleXMLElement
@@ -19,7 +24,8 @@ class Request extends RequestAbstract
             'number' => $number
         ]);
 
-        return $this->parseResponse($response);
+        $balance = new BalanceResponse($response);
+        return $balance->response();
     }
 
     /**
@@ -38,6 +44,7 @@ class Request extends RequestAbstract
             'amount' => $balance
         ]);
 
-        return $this->parseResponse($response);
+        $charge = new ChargeResponse($response);
+        return $charge->response();
     }
 }
