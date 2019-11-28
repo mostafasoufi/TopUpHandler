@@ -13,6 +13,7 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
     /**
      * Balance constructor.
      * @param $response
+     * @throws Exception
      */
     public function __construct($response)
     {
@@ -27,7 +28,9 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
      */
     public function repairResponse()
     {
-
+        foreach ($this->response as $item) {
+            
+        }
     }
 
     /**
@@ -35,8 +38,8 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
      */
     public function setErrors()
     {
-        if ($this->response->results->type == 'ERROR') {
-            $this->error = $this->response->results->text;
+        if (isset($this->response['type']) and $this->response['type'] == 'ERROR') {
+            $this->error = $this->response['text'];
         }
     }
 

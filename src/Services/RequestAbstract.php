@@ -30,6 +30,6 @@ abstract class RequestAbstract
      */
     protected function makeRequest($params, $type = 'GET')
     {
-        return $this->client->request($type, null, ['query' => $params]);
+        return $this->client->request($type, null, ['query' => $params])->getBody()->getContents();
     }
 }

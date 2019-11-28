@@ -17,7 +17,7 @@ class Request extends RequestAbstract
      * @return SimpleXMLElement
      * @throws GuzzleException
      */
-    public function getBalance($number)
+    public function getBalance(int $number)
     {
         $response = $this->makeRequest([
             'action' => 'getBalance',
@@ -35,7 +35,7 @@ class Request extends RequestAbstract
      * @return SimpleXMLElement
      * @throws GuzzleException
      */
-    public function addBalance($number, $currency, $balance)
+    public function addBalance(int $number, string $currency, float $balance)
     {
         $response = $this->makeRequest([
             'action' => 'getBalance',
