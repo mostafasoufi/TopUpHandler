@@ -28,11 +28,12 @@ class ChargeResponse extends ResponseAbstract implements ResponseInterface
 
     /**
      * @return mixed|void
+     * @throws Exception
      */
     public function setError()
     {
         if (isset($this->response['type']) and $this->response['type'] == 'ERROR') {
-            $this->error = $this->getErrorMessage($this->response['text']);
+            throw new Exception($this->getErrorMessage($this->response['text']);
         }
     }
 
@@ -42,10 +43,6 @@ class ChargeResponse extends ResponseAbstract implements ResponseInterface
      */
     public function response()
     {
-        if ($this->error) {
-            throw new Exception($this->error);
-        }
-
         return $this->response;
     }
 }

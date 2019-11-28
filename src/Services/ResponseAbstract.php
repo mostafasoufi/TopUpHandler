@@ -14,11 +14,6 @@ abstract class ResponseAbstract
     public $response;
 
     /**
-     * @var Error variable.
-     */
-    public $error;
-
-    /**
      * @param $response
      * @return SimpleXMLElement
      * @throws Exception

@@ -35,11 +35,7 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
     public function setError()
     {
         if (isset($this->response['type']) and $this->response['type'] == 'ERROR') {
-            $this->error = $this->getErrorMessage($this->response['text']);
-        }
-
-        if ($this->error) {
-            throw new Exception($this->error);
+            throw new Exception($this->getErrorMessage($this->response['text']));
         }
     }
 
