@@ -29,7 +29,7 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
     public function repairResponse()
     {
         foreach ($this->response as $item) {
-            
+
         }
     }
 

@@ -5,7 +5,6 @@ namespace TopUpHandler\Services;
 use SimpleXMLElement;
 use DOMDocument;
 use Exception;
-use LibXMLError;
 
 abstract class ResponseAbstract
 {
@@ -17,7 +16,7 @@ abstract class ResponseAbstract
     protected function parseResponse($response)
     {
         if ($error = $this->hasError($response)) {
-            throw new Exception($error->message);
+            throw new Exception($error['message']);
         }
 
         return $this->toArray(new SimpleXMLElement($response));
@@ -34,15 +33,20 @@ abstract class ResponseAbstract
 
     /**
      * @param $source
-     * @return LibXMLError
+     * @return array
      */
     private function hasError($source)
     {
+        if (!$source) {
+            return array('message' => 'The response is empty.');
+        }
+
         libxml_use_internal_errors(true);
 
         $doc = new DOMDocument();
         $doc->loadXML($source);
+        $error = libxml_get_last_error();
 
-        return libxml_get_last_error();
+        return $error ? (array)$error : false;
     }
 }
