@@ -7,36 +7,32 @@ use Exception;
 
 class ChargeResponse extends ResponseAbstract implements ResponseInterface
 {
-    private $response;
-    private $error;
+    /**
+     * @var array Error messages.
+     */
+    public $errorMessages = [
+        
+    ];
 
     /**
      * Balance constructor.
      * @param $response
+     * @throws Exception
      */
     public function __construct($response)
     {
         $this->response = $this->parseResponse($response);
 
-        $this->repairResponse();
-        $this->setErrors();
-    }
-
-    /**
-     *
-     */
-    public function repairResponse()
-    {
-
+        $this->setError();
     }
 
     /**
      * @return mixed|void
      */
-    public function setErrors()
+    public function setError()
     {
-        if ($this->response->results->type == 'ERROR') {
-            $this->error = $this->response->results->text;
+        if (isset($this->response['type']) and $this->response['type'] == 'ERROR') {
+            $this->error = $this->getErrorMessage($this->response['text']);
         }
     }
 

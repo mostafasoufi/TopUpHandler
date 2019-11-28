@@ -13,12 +13,7 @@ interface ResponseInterface
     /**
      * @return mixed
      */
-    public function repairResponse();
-
-    /**
-     * @return mixed
-     */
-    public function setErrors();
+    public function setError();
 
     /**
      * @return mixed

@@ -7,8 +7,14 @@ use Exception;
 
 class BalanceResponse extends ResponseAbstract implements ResponseInterface
 {
-    private $response;
-    private $error;
+    /**
+     * @var array Error messages.
+     */
+    public $errorMessages = [
+        'Card not found' => 'The number is not exist.',
+        'Syntax error' => 'The parameters is missing.',
+        'Не атрымалася ініцыялізаваць пар' => 'Unexpected error.',
+    ];
 
     /**
      * Balance constructor.
@@ -19,27 +25,16 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
     {
         $this->response = $this->parseResponse($response);
 
-        $this->repairResponse();
-        $this->setErrors();
-    }
-
-    /**
-     *
-     */
-    public function repairResponse()
-    {
-        foreach ($this->response as $item) {
-
-        }
+        $this->setError();
     }
 
     /**
      * @return mixed|void
      */
-    public function setErrors()
+    public function setError()
     {
         if (isset($this->response['type']) and $this->response['type'] == 'ERROR') {
-            $this->error = $this->response['text'];
+            $this->error = $this->getErrorMessage($this->response['text']);
         }
     }
 

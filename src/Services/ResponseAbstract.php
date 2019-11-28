@@ -9,6 +9,16 @@ use Exception;
 abstract class ResponseAbstract
 {
     /**
+     * @var Response variable.
+     */
+    public $response;
+
+    /**
+     * @var Error variable.
+     */
+    public $error;
+
+    /**
      * @param $response
      * @return SimpleXMLElement
      * @throws Exception
@@ -48,5 +58,18 @@ abstract class ResponseAbstract
         $error = libxml_get_last_error();
 
         return $error ? (array)$error : false;
+    }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    public function getErrorMessage($string)
+    {
+        if (empty($this->errorMessages[$string])) {
+            return 'Undefined error.';
+        }
+
+        return $this->errorMessages[$string];
     }
 }

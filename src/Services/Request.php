@@ -7,6 +7,9 @@ use SimpleXMLElement;
 
 class Request extends RequestAbstract
 {
+    /**
+     * Request constructor.
+     */
     public function __construct()
     {
         parent::__construct();
