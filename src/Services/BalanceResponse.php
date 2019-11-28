@@ -30,24 +30,34 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
 
     /**
      * @return mixed|void
+     * @throws Exception
      */
     public function setError()
     {
         if (isset($this->response['type']) and $this->response['type'] == 'ERROR') {
             $this->error = $this->getErrorMessage($this->response['text']);
         }
-    }
 
-    /**
-     * @return SimpleXMLElement
-     * @throws Exception
-     */
-    public function response()
-    {
         if ($this->error) {
             throw new Exception($this->error);
         }
+    }
 
-        return $this->response;
+    /**
+     * Get response.
+     * @return mixed|SimpleXMLElement
+     */
+    public function response()
+    {
+        return $this->response['card'];
+    }
+
+    /**
+     * Check the response is blocked or not.
+     * @return bool
+     */
+    public function isBlocked()
+    {
+        return $this->response['card']['blocked'] == 'true' ? true : false;
     }
 }

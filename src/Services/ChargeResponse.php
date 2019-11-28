@@ -11,7 +11,7 @@ class ChargeResponse extends ResponseAbstract implements ResponseInterface
      * @var array Error messages.
      */
     public $errorMessages = [
-        
+
     ];
 
     /**
