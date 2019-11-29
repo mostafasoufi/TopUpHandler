@@ -14,6 +14,7 @@ abstract class ResponseAbstract
     public $response;
 
     /**
+     * Parse response method.
      * @param $response
      * @return SimpleXMLElement
      * @throws Exception
@@ -28,6 +29,7 @@ abstract class ResponseAbstract
     }
 
     /**
+     * Convert object to array.
      * @param $object
      * @return mixed
      */
@@ -37,6 +39,7 @@ abstract class ResponseAbstract
     }
 
     /**
+     * Check the xml is valid or not.
      * @param $source
      * @return array
      */
@@ -56,6 +59,7 @@ abstract class ResponseAbstract
     }
 
     /**
+     * Get better error messages.
      * @param $string
      * @return string
      */

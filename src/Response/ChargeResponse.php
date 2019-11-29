@@ -8,6 +8,7 @@ use Exception;
 class ChargeResponse extends ResponseAbstract implements ResponseInterface
 {
     /**
+     * All errors for current method and can be update.
      * @var array Error messages.
      */
     public $errorMessages = [
@@ -29,6 +30,7 @@ class ChargeResponse extends ResponseAbstract implements ResponseInterface
     }
 
     /**
+     * Check response validation.
      * @return mixed|void
      * @throws Exception
      */
@@ -44,6 +46,7 @@ class ChargeResponse extends ResponseAbstract implements ResponseInterface
     }
 
     /**
+     * Get response.
      * @return SimpleXMLElement
      * @throws Exception
      */

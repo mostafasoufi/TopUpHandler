@@ -27,6 +27,7 @@ abstract class RequestAbstract
     }
 
     /**
+     * Make client request.
      * @param $params
      * @param string $type
      * @return mixed|ResponseInterface
