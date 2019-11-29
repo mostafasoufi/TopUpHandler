@@ -58,4 +58,22 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
     {
         return $this->response['card']['blocked'] == 'true' ? true : false;
     }
+
+    /**
+     * Get currency.
+     * @return SimpleXMLElement
+     */
+    public function getCurrency()
+    {
+        return $this->response['card']['curr'];
+    }
+
+    /**
+     * Get balance.
+     * @return SimpleXMLElement
+     */
+    public function getbalance()
+    {
+        return $this->response['card']['balance'];
+    }
 }

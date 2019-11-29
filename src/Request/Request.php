@@ -46,9 +46,17 @@ class Request extends RequestAbstract
      */
     public function addBalance(int $number, string $currency, float $balance)
     {
+        // Get balance.
+        $balance = $this->getBalance($number);
+
         // Check the card is blocked or not.
-        if ($this->getBalance($number)->isBlocked()) {
+        if ($balance->isBlocked()) {
             throw new Exception('The card is blocked and can\'t charge.');
+        }
+
+        // Check currency
+        if ($currency != $balance->getCurrency()) {
+            throw new Exception('The currency is not valid.');
         }
 
         // Make request.

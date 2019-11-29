@@ -40,7 +40,7 @@ class ChargeResponse extends ResponseAbstract implements ResponseInterface
             throw new Exception($this->getErrorMessage($this->response['text']));
         }
 
-        if ($this->response['result'] != 'Ok') {
+        if (isset($this->response['result']) and $this->response['result'] != 'Ok') {
             throw new Exception($this->response['result']);
         }
     }
