@@ -1,6 +1,6 @@
 <?php
 
-namespace TopUpHandler\Services;
+namespace TopUpHandler\Response;
 
 use SimpleXMLElement;
 use Exception;

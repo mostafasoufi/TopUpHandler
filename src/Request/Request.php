@@ -1,9 +1,11 @@
 <?php
 
-namespace TopUpHandler\Services;
+namespace TopUpHandler\Request;
 
 use GuzzleHttp\Exception\GuzzleException;
 use SimpleXMLElement;
+use TopUpHandler\Response\BalanceResponse;
+use TopUpHandler\Response\ChargeResponse;
 
 class Request extends RequestAbstract
 {

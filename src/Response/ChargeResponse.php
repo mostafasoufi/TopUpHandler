@@ -1,6 +1,6 @@
 <?php
 
-namespace TopUpHandler\Services;
+namespace TopUpHandler\Response;
 
 use SimpleXMLElement;
 use Exception;
@@ -33,7 +33,7 @@ class ChargeResponse extends ResponseAbstract implements ResponseInterface
     public function setError()
     {
         if (isset($this->response['type']) and $this->response['type'] == 'ERROR') {
-            throw new Exception($this->getErrorMessage($this->response['text']);
+            throw new Exception($this->getErrorMessage($this->response['text']));
         }
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace TopUpHandler\Services;
+namespace TopUpHandler\Request;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;

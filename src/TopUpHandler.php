@@ -2,7 +2,7 @@
 
 namespace TopUpHandler;
 
-use TopUpHandler\Services\Request;
+use TopUpHandler\Request\Request;
 use Exception;
 
 class TopUpHandler
