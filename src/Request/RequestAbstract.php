@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 abstract class RequestAbstract
 {
     public $client;
+    private $auth;
     const BASE_URL = 'http://localhost:3001';
 
     /**
@@ -16,6 +17,9 @@ abstract class RequestAbstract
      */
     public function __construct()
     {
+        // Set authentication.
+        $this->auth = ['username', 'password'];
+
         $this->client = new Client([
             'base_uri' => self::BASE_URL,
             'timeout' => 5,
@@ -30,6 +34,9 @@ abstract class RequestAbstract
      */
     protected function makeRequest($params, $type = 'GET')
     {
-        return $this->client->request($type, null, ['query' => $params])->getBody()->getContents();
+        return $this->client->request($type, null, [
+            'query' => $params,
+            'auth' => $this->auth,
+        ])->getBody()->getContents();
     }
 }
