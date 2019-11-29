@@ -25,14 +25,14 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
     {
         $this->response = $this->parseResponse($response);
 
-        $this->setError();
+        $this->validation();
     }
 
     /**
      * @return mixed|void
      * @throws Exception
      */
-    public function setError()
+    public function validation()
     {
         if (isset($this->response['type']) and $this->response['type'] == 'ERROR') {
             throw new Exception($this->getErrorMessage($this->response['text']));

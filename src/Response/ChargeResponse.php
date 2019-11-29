@@ -11,7 +11,9 @@ class ChargeResponse extends ResponseAbstract implements ResponseInterface
      * @var array Error messages.
      */
     public $errorMessages = [
-
+        'Card not found' => 'The number is not exist.',
+        'Syntax error' => 'The parameters is missing.',
+        'Не атрымалася ініцыялізаваць пар' => 'Unexpected error.',
     ];
 
     /**
@@ -23,17 +25,21 @@ class ChargeResponse extends ResponseAbstract implements ResponseInterface
     {
         $this->response = $this->parseResponse($response);
 
-        $this->setError();
+        $this->validation();
     }
 
     /**
      * @return mixed|void
      * @throws Exception
      */
-    public function setError()
+    public function validation()
     {
         if (isset($this->response['type']) and $this->response['type'] == 'ERROR') {
             throw new Exception($this->getErrorMessage($this->response['text']));
+        }
+
+        if ($this->response['result'] != 'Ok') {
+            throw new Exception($this->response['result']);
         }
     }
 

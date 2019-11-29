@@ -7,6 +7,8 @@ use Exception;
 
 class TopUpHandler
 {
+    private $request;
+
     public function __construct(array $config = array())
     {
         /*if($config && is_array($config)) {
@@ -14,6 +16,8 @@ class TopUpHandler
         } else {
             $this->config = new Config();
         }*/
+
+        $this->request = new Request();
     }
 
     public function __call($name, $arguments)
@@ -22,6 +26,6 @@ class TopUpHandler
             throw new Exception('Method is not available.');
         }
 
-        return call_user_func_array(array(new Request(), $name), $arguments);
+        return call_user_func_array(array($this->request, $name), $arguments);
     }
 }

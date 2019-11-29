@@ -6,6 +6,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use SimpleXMLElement;
 use TopUpHandler\Response\BalanceResponse;
 use TopUpHandler\Response\ChargeResponse;
+use Exception;
 
 class Request extends RequestAbstract
 {
@@ -29,27 +30,30 @@ class Request extends RequestAbstract
             'number' => $number
         ]);
 
-        $balance = new BalanceResponse($response);
-        return $balance->response();
+        return new BalanceResponse($response);
     }
 
     /**
-     * @param $number
-     * @param $currency
-     * @param $balance
-     * @return SimpleXMLElement
+     * @param int $number
+     * @param string $currency
+     * @param float $balance
+     * @return ChargeResponse
      * @throws GuzzleException
      */
     public function addBalance(int $number, string $currency, float $balance)
     {
+        // Check the card is blocked or not.
+        if ($this->getBalance($number)->isBlocked()) {
+            throw new Exception('The card is blocked and can\'t charge.');
+        }
+
         $response = $this->makeRequest([
-            'action' => 'getBalance',
+            'action' => 'addBalance',
             'number' => $number,
             'currency' => $currency,
             'amount' => $balance
         ]);
 
-        $charge = new ChargeResponse($response);
-        return $charge->response();
+        return new ChargeResponse($response);
     }
 }

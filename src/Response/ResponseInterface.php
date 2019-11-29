@@ -13,7 +13,7 @@ interface ResponseInterface
     /**
      * @return mixed
      */
-    public function setError();
+    public function validation();
 
     /**
      * @return mixed
