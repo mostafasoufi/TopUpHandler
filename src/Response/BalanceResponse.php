@@ -42,7 +42,7 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
     }
 
     /**
-     * Get response.
+     * Get all object from response.
      * @return mixed|SimpleXMLElement
      */
     public function response()
@@ -60,20 +60,20 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
     }
 
     /**
+     * Get balance.
+     * @return SimpleXMLElement
+     */
+    public function getBalance()
+    {
+        return $this->response['card']['balance'];
+    }
+
+    /**
      * Get currency.
      * @return SimpleXMLElement
      */
     public function getCurrency()
     {
         return $this->response['card']['curr'];
-    }
-
-    /**
-     * Get balance.
-     * @return SimpleXMLElement
-     */
-    public function getbalance()
-    {
-        return $this->response['card']['balance'];
     }
 }

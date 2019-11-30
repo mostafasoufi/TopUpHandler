@@ -20,8 +20,8 @@ class Request extends RequestAbstract
 
     /**
      * Get balance method.
-     * @param $number
-     * @return SimpleXMLElement
+     * @param int $number
+     * @return BalanceResponse
      * @throws GuzzleException
      */
     public function getBalance(int $number)
@@ -40,31 +40,37 @@ class Request extends RequestAbstract
      * Add balance method.
      * @param int $number
      * @param string $currency
-     * @param float $balance
+     * @param float $amount
      * @return ChargeResponse
      * @throws GuzzleException
      */
-    public function addBalance(int $number, string $currency, float $balance)
+    public function addBalance(int $number, string $currency, float $amount)
     {
         // Get balance.
         $balance = $this->getBalance($number);
 
         // Check the card is blocked or not.
-        if ($balance->isBlocked()) {
+        if ($balance->isBlocked())
             throw new Exception('The card is blocked and can\'t charge.');
-        }
 
         // Check currency
-        if ($currency != $balance->getCurrency()) {
+        if ($currency != $balance->getCurrency())
             throw new Exception('The currency is not valid.');
-        }
+
+        // Check the negative balance.
+        if ($balance->getbalance() <= -5)
+            throw new Exception('The balance is not valid.');
+
+        // Add enough money to some card that are negative.
+        if ($balance->getbalance() < -0.01 and $balance->getbalance() >= -4.99)
+            $amount += abs($balance->getbalance());
 
         // Make request.
         $response = $this->makeRequest([
             'action' => 'addBalance',
             'number' => $number,
             'currency' => $currency,
-            'amount' => $balance
+            'amount' => $amount
         ]);
 
         // Get charge response.
