@@ -12,10 +12,11 @@ class Request extends RequestAbstract
 {
     /**
      * Request constructor.
+     * @param $config
      */
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct();
+        parent::__construct($config);
     }
 
     /**
@@ -65,12 +66,12 @@ class Request extends RequestAbstract
             throw new Exception('The currency is not valid.');
 
         // Check the negative balance.
-        if ($balance->getbalance() <= -5)
+        if ($balance->getBalance() <= -5)
             throw new Exception('The balance is not valid.');
 
         // Add enough money to some card that are negative.
-        if ($balance->getbalance() < -0.01 and $balance->getbalance() >= -4.99)
-            $amount += abs($balance->getbalance());
+        if ($balance->getBalance() < -0.01 and $balance->getBalance() >= -4.99)
+            $amount += abs($balance->getBalance());
 
         // Make request.
         $response = $this->makeRequest([

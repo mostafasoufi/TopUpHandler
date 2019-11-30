@@ -10,15 +10,20 @@ use TopUpHandler\Response\ErrorHandling;
 
 abstract class RequestAbstract
 {
+    public $config;
     public $client;
     private $auth;
     const BASE_URL = 'http://localhost:3001';
 
     /**
      * Request constructor.
+     * @param $config
      */
-    public function __construct()
+    public function __construct($config)
     {
+        // Set config.
+        $this->config = $config; // TODO
+
         // Set authentication.
         $this->auth = ['username', 'password'];
 
