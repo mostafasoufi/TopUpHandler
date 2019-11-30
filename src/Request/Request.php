@@ -3,7 +3,6 @@
 namespace TopUpHandler\Request;
 
 use GuzzleHttp\Exception\GuzzleException;
-use SimpleXMLElement;
 use TopUpHandler\Response\BalanceResponse;
 use TopUpHandler\Response\ChargeResponse;
 use Exception;

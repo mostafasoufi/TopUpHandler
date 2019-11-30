@@ -14,6 +14,19 @@ abstract class ResponseAbstract
     public $response;
 
     /**
+     * @var Error handler object.
+     */
+    public $error;
+
+    /**
+     * ResponseAbstract constructor.
+     */
+    public function __construct()
+    {
+
+    }
+
+    /**
      * Parse response method.
      * @param $response
      * @return SimpleXMLElement
@@ -21,7 +34,7 @@ abstract class ResponseAbstract
      */
     protected function parseResponse($response)
     {
-        if ($error = $this->hasError($response)) {
+        if ($error = $this->xmlHasError($response)) {
             throw new Exception($error['message']);
         }
 
@@ -43,7 +56,7 @@ abstract class ResponseAbstract
      * @param $source
      * @return array
      */
-    private function hasError($source)
+    private function xmlHasError($source)
     {
         if (!$source) {
             return array('message' => 'The response is empty.');
@@ -56,19 +69,5 @@ abstract class ResponseAbstract
         $error = libxml_get_last_error();
 
         return $error ? (array)$error : false;
-    }
-
-    /**
-     * Get better error messages.
-     * @param $string
-     * @return string
-     */
-    public function getErrorMessage($string)
-    {
-        if (empty($this->errorMessages[$string])) {
-            return 'Undefined error.';
-        }
-
-        return $this->errorMessages[$string];
     }
 }

@@ -5,6 +5,7 @@ namespace TopUpHandler\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
+use Exception;
 
 abstract class RequestAbstract
 {
@@ -23,6 +24,7 @@ abstract class RequestAbstract
         $this->client = new Client([
             'base_uri' => self::BASE_URL,
             'timeout' => 5,
+            'exceptions' => false,
         ]);
     }
 
@@ -35,9 +37,20 @@ abstract class RequestAbstract
      */
     protected function makeRequest($params, $type = 'GET')
     {
-        return $this->client->request($type, null, [
+        $response = $this->client->request($type, null, [
             'query' => $params,
             'auth' => $this->auth,
-        ])->getBody()->getContents();
+        ]);
+
+        if ($response->getStatusCode() != 200) {
+            // Send Notification for some status codes.
+            if ($response->getStatusCode() == 404 or $response->getStatusCode() == 500) {
+                // TODO
+            }
+
+            throw new Exception(sprintf('%s Error - System error.', $response->getStatusCode()));
+        }
+
+        return $response->getBody()->getContents();
     }
 }

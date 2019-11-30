@@ -13,10 +13,5 @@ interface ResponseInterface
     /**
      * @return mixed
      */
-    public function validation();
-
-    /**
-     * @return mixed
-     */
     public function response();
 }
