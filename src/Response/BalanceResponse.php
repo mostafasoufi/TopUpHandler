@@ -20,7 +20,7 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
         $this->response = $this->parseResponse($response);
 
         // Initial error handling.
-        new ErrorHandling($this->response);
+        $this->errorHandling = new ErrorHandling($this->response);
     }
 
     /**
@@ -30,6 +30,15 @@ class BalanceResponse extends ResponseAbstract implements ResponseInterface
     public function response()
     {
         return $this->response['card'];
+    }
+
+    /**
+     * Check if the request needs to send again or not.
+     * @return mixed
+     */
+    public function needRequestAgain()
+    {
+        return $this->errorHandling->hasRequestAction();
     }
 
     /**

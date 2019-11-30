@@ -14,9 +14,9 @@ abstract class ResponseAbstract
     public $response;
 
     /**
-     * @var Error handler object.
+     * @var Error handling object.
      */
-    public $error;
+    public $errorHandling;
 
     /**
      * ResponseAbstract constructor.

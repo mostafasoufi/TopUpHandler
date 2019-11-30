@@ -11,7 +11,7 @@ try {
     echo '<pre>'.print_r($balance->isBlocked(), 1).'</pre>';
     echo '<pre>'.print_r($balance->response(), 1).'</pre>';
 
-    $charge = $top->addBalance(3725123123, 'EUR', 1000);
+    $charge = $top->addBalance(3725123123, 'USD', 1000);
     echo '<pre>' . print_r($charge->response(), 1) . '</pre>';
 
 } catch (Exception $e) {

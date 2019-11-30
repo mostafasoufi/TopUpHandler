@@ -6,6 +6,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use TopUpHandler\Response\BalanceResponse;
 use TopUpHandler\Response\ChargeResponse;
 use Exception;
+use TopUpHandler\Response\Test;
 
 class Request extends RequestAbstract
 {
@@ -32,7 +33,14 @@ class Request extends RequestAbstract
         ]);
 
         // Get balance response.
-        return new BalanceResponse($response);
+        $response = new BalanceResponse($response);
+
+        // Check if the request needs run again.
+        if ($response->needRequestAgain()) {
+            $this->getBalance($number);
+        }
+
+        return $response;
     }
 
     /**
@@ -73,6 +81,13 @@ class Request extends RequestAbstract
         ]);
 
         // Get charge response.
-        return new ChargeResponse($response);
+        $response = new ChargeResponse($response);
+
+        // Check if the request needs run again.
+        if ($response->needRequestAgain()) {
+            $this->getBalance($number);
+        }
+
+        return $response;
     }
 }

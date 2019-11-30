@@ -14,4 +14,9 @@ interface ResponseInterface
      * @return mixed
      */
     public function response();
+
+    /**
+     * @return mixed
+     */
+    public function needRequestAgain();
 }
