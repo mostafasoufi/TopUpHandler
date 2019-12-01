@@ -60,7 +60,7 @@ print_r($charge->response();
 
 #### Configuration
 You can configuration many items before the requests.
-```
+```php
 $config = array(
     'api' => [
         'url' => 'https://legacyapi.example.com', // API address, default is http://localhost:3001
