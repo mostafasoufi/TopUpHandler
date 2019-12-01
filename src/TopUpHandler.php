@@ -2,8 +2,11 @@
 
 namespace TopUpHandler;
 
+use GuzzleHttp\Exception\GuzzleException;
 use TopUpHandler\Request\Request;
 use Exception;
+use TopUpHandler\Response\BalanceResponse;
+use TopUpHandler\Response\ChargeResponse;
 
 class TopUpHandler
 {
@@ -33,17 +36,77 @@ class TopUpHandler
     }
 
     /**
-     * @param $name
-     * @param $arguments
-     * @return mixed
+     * Get balance method.
+     * @param $number
+     * @return BalanceResponse
      * @throws Exception
+     * @throws GuzzleException
      */
-    public function __call($name, $arguments)
+    public function getBalance(int $number)
     {
-        if (!method_exists(Request::class, $name)) {
-            throw new Exception('Method is not available.');
+        // Make request.
+        $response = $this->request->makeRequest([
+            'action' => 'getBalance',
+            'number' => $number
+        ]);
+
+        // Get balance response.
+        $response = new BalanceResponse($response);
+
+        // Check if the request needs run again.
+        if ($response->needRequestAgain()) {
+            $this->getBalance($number);
         }
 
-        return call_user_func_array(array($this->request, $name), $arguments);
+        return $response;
+    }
+
+    /**
+     * Add balance method.
+     * @param $number
+     * @param $currency
+     * @param $amount
+     * @return ChargeResponse
+     * @throws Exception
+     * @throws GuzzleException
+     */
+    public function addBalance(int $number, string $currency, float $amount)
+    {
+        // Get balance.
+        $balance = $this->getBalance($number);
+
+        // Check the card is blocked or not.
+        if ($balance->isBlocked())
+            throw new Exception('The card is blocked and can\'t charge.');
+
+        // Check currency
+        if ($currency != $balance->getCurrency())
+            throw new Exception('The currency is not valid.');
+
+        // Check the negative balance.
+        if ($balance->getBalance() <= -5)
+            throw new Exception('The balance is not valid.');
+
+        // Add enough money to some card that are negative.
+        if ($balance->getBalance() < -0.01 and $balance->getBalance() >= -4.99)
+            $amount += abs($balance->getBalance());
+
+        // Make request.
+        $response = $this->request->makeRequest([
+            'action' => 'addBalance',
+            'number' => $number,
+            'currency' => $currency,
+            'amount' => $amount
+        ]);
+
+        // Get charge response.
+        $response = new ChargeResponse($response);
+
+        // Check if the request needs run again.
+        if ($response->needRequestAgain()) {
+            $this->getBalance($number);
+        }
+
+        return $response;
     }
 }

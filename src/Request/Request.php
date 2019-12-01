@@ -2,93 +2,60 @@
 
 namespace TopUpHandler\Request;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use TopUpHandler\Response\BalanceResponse;
-use TopUpHandler\Response\ChargeResponse;
+use Psr\Http\Message\ResponseInterface;
 use Exception;
-use TopUpHandler\Response\Test;
 
-class Request extends RequestAbstract
+class Request
 {
+    public $config;
+    public $client;
+    private $auth;
+    const BASE_URL = 'http://localhost:3001';
+
     /**
      * Request constructor.
      * @param $config
      */
     public function __construct($config)
     {
-        parent::__construct($config);
+        // Set config.
+        $this->config = $config; // TODO
+
+        // Set authentication.
+        $this->auth = ['username', 'password'];
+
+        $this->client = new Client([
+            'base_uri' => self::BASE_URL,
+            'timeout' => 5,
+            'exceptions' => false,
+        ]);
     }
 
     /**
-     * Get balance method.
-     * @param int $number
-     * @return BalanceResponse
+     * Make client request.
+     * @param $params
+     * @param string $type
+     * @return mixed|ResponseInterface
      * @throws GuzzleException
      */
-    public function getBalance(int $number)
+    public function makeRequest($params, $type = 'GET')
     {
-        // Make request.
-        $response = $this->makeRequest([
-            'action' => 'getBalance',
-            'number' => $number
+        $response = $this->client->request($type, null, [
+            'query' => $params,
+            'auth' => $this->auth,
         ]);
 
-        // Get balance response.
-        $response = new BalanceResponse($response);
+        if ($response->getStatusCode() != 200) {
+            // Send Notification for some status codes.
+            if ($response->getStatusCode() == 404 or $response->getStatusCode() == 500) {
+                // TODO
+            }
 
-        // Check if the request needs run again.
-        if ($response->needRequestAgain()) {
-            $this->getBalance($number);
+            throw new Exception(sprintf('%s Error - System error.', $response->getStatusCode()));
         }
 
-        return $response;
-    }
-
-    /**
-     * Add balance method.
-     * @param int $number
-     * @param string $currency
-     * @param float $amount
-     * @return ChargeResponse
-     * @throws GuzzleException
-     */
-    public function addBalance(int $number, string $currency, float $amount)
-    {
-        // Get balance.
-        $balance = $this->getBalance($number);
-
-        // Check the card is blocked or not.
-        if ($balance->isBlocked())
-            throw new Exception('The card is blocked and can\'t charge.');
-
-        // Check currency
-        if ($currency != $balance->getCurrency())
-            throw new Exception('The currency is not valid.');
-
-        // Check the negative balance.
-        if ($balance->getBalance() <= -5)
-            throw new Exception('The balance is not valid.');
-
-        // Add enough money to some card that are negative.
-        if ($balance->getBalance() < -0.01 and $balance->getBalance() >= -4.99)
-            $amount += abs($balance->getBalance());
-
-        // Make request.
-        $response = $this->makeRequest([
-            'action' => 'addBalance',
-            'number' => $number,
-            'currency' => $currency,
-            'amount' => $amount
-        ]);
-
-        // Get charge response.
-        $response = new ChargeResponse($response);
-
-        // Check if the request needs run again.
-        if ($response->needRequestAgain()) {
-            $this->getBalance($number);
-        }
-
-        return $response;
+        return $response->getBody()->getContents();
     }
 }
