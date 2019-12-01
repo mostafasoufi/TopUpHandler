@@ -6,17 +6,16 @@ use TopUpHandler\TopUpHandler;
 
 $config = array(
     'api' => [
-        'url' => '',
-        'credential' => [
-            'username' => 'admin',
-            'password' => 'admin',
-        ]
+        'url' => 'http://localhost:3001',
+        'credential' => ['admin', 'admin']
     ],
     'notifications' => [
         'email' => [
+            'enabled' => true,
             'message' => 'Hello, here are the problem. Line: %line%, Message: %message%',
         ],
         'sms' => [
+            'enabled' => false,
             'message' => 'Hello, here are the problem. Line: %line%, Message: %message%',
         ]
     ]

@@ -26,13 +26,24 @@ class TopUpHandler
      */
     public function __construct(array $config = array())
     {
-        if($config && is_array($config)) {
-            $this->config = $config;
-        } else {
-            $this->config = new Config();
-        }
+        // Sync configurations
+        $this->syncConfiguration($config);
 
+        // Initial request.
         $this->request = new Request($this->config);
+    }
+
+    /**
+     * Sync configuration.
+     * @param $config
+     */
+    private function syncConfiguration($config)
+    {
+        // Instance the configuration.
+        Configuration::getInstance();
+
+        // Sync default and custom configuration.
+        $this->config = array_replace_recursive($config, Configuration::getAll(), $config);
     }
 
     /**

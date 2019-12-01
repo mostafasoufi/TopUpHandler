@@ -6,13 +6,12 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Exception;
+use TopUpHandler\Configuration;
 
 class Request
 {
     public $config;
     public $client;
-    private $auth;
-    const BASE_URL = 'http://localhost:3001';
 
     /**
      * Request constructor.
@@ -20,14 +19,10 @@ class Request
      */
     public function __construct($config)
     {
-        // Set config.
-        $this->config = $config; // TODO
-
-        // Set authentication.
-        $this->auth = ['username', 'password'];
+        $this->config = $config;
 
         $this->client = new Client([
-            'base_uri' => self::BASE_URL,
+            'base_uri' => $this->config['api']['url'],
             'timeout' => 5,
             'exceptions' => false,
         ]);
@@ -44,7 +39,7 @@ class Request
     {
         $response = $this->client->request($type, null, [
             'query' => $params,
-            'auth' => $this->auth,
+            'auth' => $this->config['api']['credential'],
         ]);
 
         if ($response->getStatusCode() != 200) {
