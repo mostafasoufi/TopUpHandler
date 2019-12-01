@@ -1,8 +1,8 @@
 <?php
 
-namespace TopUpHandler\Notifications;
+namespace TopUpHandler\Notification;
 
-interface SMS
+interface NotificationInterface
 {
     public function __construct();
 }

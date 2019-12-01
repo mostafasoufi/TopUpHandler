@@ -24,11 +24,12 @@ class Configuration
             'notifications' => [
                 'email' => [
                     'enabled' => true,
-                    'message' => 'Hello, here are the problem. Line: %line%, Message: %message%',
+                    'message' => 'Hello,<br />Here are the problem.<br />Number: %number%<br />Response: %response%<br />Status Code: %statusCode%', // Message with variables.
+                    'recipients' => ['devops@example.com', 'support@example.com']
                 ],
                 'sms' => [
                     'enabled' => true,
-                    'message' => 'Hello, here are the problem. Line: %line%, Message: %message%',
+                    'message' => 'Hello,\n Here are the problem.\n Number: %number% \n Response: %response% \n Status Code: %',
                 ]
             ]
         ];
@@ -39,8 +40,7 @@ class Configuration
      */
     public static function getInstance()
     {
-        if ( is_null( self::$instance ) )
-        {
+        if (is_null(self::$instance)) {
             self::$instance = new self();
         }
         return self::$instance;
