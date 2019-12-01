@@ -1,0 +1,24 @@
+{
+    "name": "mostafa/top-up-handler",
+    "description": "A PHP wrapper for Legacy API",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Mostafa Soufi",
+            "email": "mostafa.soufi@hotmail.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "guzzlehttp/guzzle": "^6.4",
+        "ext-SimpleXML": "^7.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "TopUpHandler\\": "src/"
+        }
+    }
+}
